@@ -72,6 +72,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "./Navbar";
+import { useCart } from "../pages/CartContext";
 
 <>
   <Navbar />
@@ -83,6 +84,7 @@ const UserProducts = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const { fetchCart } = useCart();
 
   const fetchProducts = async () => {
     try {
@@ -105,24 +107,18 @@ const UserProducts = () => {
   }, []);
 
   const addToCart = async (productId) => {
-    
-    const user = JSON.parse(localStorage.getItem("user"));
-
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
     try {
-
       await axios.post("http://localhost:3000/cart/add", {
-        userId: user._id,
+        userId: user.id,
         productId,
         quantity: 1,
       });
-      console.log(user._id,
-        productId,
-        1)
 
-      alert("Product added successfully");
-      window.location.reload();
+      fetchCart(); 
+      alert("Product added to cart!");
     } catch (error) {
-      console.log(error);
+      console.log(error.response?.data || error.message)
     }
   };
 

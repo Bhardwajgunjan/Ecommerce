@@ -1,5 +1,4 @@
 import express from 'express'
-//import mongoose from 'mongoose'
 import Cart from '../models/Cart.js'
 
 
@@ -15,7 +14,6 @@ export const addToCart = async (req, res) => {
             productId
         });
 
-        // If already exists increase quantity
         if (existing) {
 
             existing.quantity += quantity;
@@ -63,5 +61,15 @@ export const getCartItems = async (req, res) => {
     {
         res.status(500).json({ message: "Server error"});
     }
-  
+}
+
+export const deleteItem = async (req, res) => {
+    try {
+        await Cart.findByIdAndDelete(req.params.id);
+        res.status(200).json({ message: "Item deleted" });
+    } 
+    
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 }

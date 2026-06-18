@@ -1,6 +1,3 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -10,11 +7,12 @@ import UserProducts from './pages/UserProducts'
 import Profile from './pages/Profile'
 import Navbar from './pages/Navbar'
 import Cart from './pages/Cart'
-
+import { CartProvider } from './pages/CartContext'
 
 function App() {
   return (
     <>
+    <CartProvider>
     <BrowserRouter>
     <Navbar/>
     <Routes>
@@ -27,6 +25,7 @@ function App() {
       <Route path="/cart" element={<Cart />} />
     </Routes>
     </BrowserRouter>
+    </CartProvider>
     </>
   )
 }

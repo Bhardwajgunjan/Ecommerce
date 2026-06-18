@@ -23,41 +23,11 @@
 import { Link, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useCart } from "./CartContext"; 
 
 const Navbar = () => {
   const location = useLocation();
-  const [cartCount, setCartCount] = useState(0);
-
-  const fetchCart = async () => {
-
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  try {
-
-    const response = await axios.get(
-      `http://localhost:3000/cart/getcart/${user.id}`
-    );
-
-    const totalQuantity = response.data.reduce(
-      (total, item) => total + item.quantity,
-       0
-    );
-
-    setCartCount(totalQuantity);
-
-  } catch(error) {
-
-    console.log(error);
-
-  }
-};
-
- useEffect(() => {
-
-    fetchCart();
-
-  }, []);
-
+  const { cartCount } = useCart();
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : "U";
